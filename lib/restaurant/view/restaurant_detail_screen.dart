@@ -17,6 +17,8 @@ class RestaurantDetailScreen extends ConsumerStatefulWidget {
   final String rid;
   const RestaurantDetailScreen({super.key, required this.rid});
 
+  static String get routeName => 'restaurantDetail';
+
   @override
   ConsumerState<RestaurantDetailScreen> createState() =>
       _RestaurantDetailScreenState();

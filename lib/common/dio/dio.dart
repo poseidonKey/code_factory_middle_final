@@ -1,5 +1,6 @@
 import 'package:actual/common/const/data.dart';
 import 'package:actual/common/secure_storage/secure_storage.dart';
+import 'package:actual/user/provider/auth_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,14 +8,18 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 final dioProvider = Provider<Dio>((ref) {
   final storage = ref.watch<FlutterSecureStorage>(secureStorageProvider);
   final dio = Dio();
-  dio.interceptors.add(CustomInterceptor(storage: storage));
+  dio.interceptors.add(CustomInterceptor(storage: storage, ref: ref));
   return dio;
 });
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
+  final Ref ref;
 
-  CustomInterceptor({required this.storage});
+  CustomInterceptor({
+    required this.storage,
+    required this.ref,
+  });
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
@@ -46,6 +51,9 @@ class CustomInterceptor extends Interceptor {
         return handler.reject(e);
       }
     }
+
+    ref.read(authProvider.notifier).logout();
+    // ref.read(userMeProvider.notifier).logout(); 이것을 사용하면 circular dependency 에러 발생
 
     return handler.reject(err);
   }
