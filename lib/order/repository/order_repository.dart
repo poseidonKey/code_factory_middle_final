@@ -17,7 +17,8 @@ final orderRepositoryProvider = Provider<OrderRepository>((ref) {
 });
 
 @RestApi()
-abstract class OrderRepository implements IBasePaginationRepository {
+abstract class OrderRepository
+    implements IBasePaginationRepository<OrderModel> {
   factory OrderRepository(Dio dio, {String baseUrl}) = _OrderRepository;
 
   @GET('/')
