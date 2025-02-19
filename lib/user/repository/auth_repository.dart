@@ -14,7 +14,10 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 class AuthRepository {
   final String baseUrl;
   final Dio dio;
-  AuthRepository({required this.baseUrl, required this.dio});
+  AuthRepository({
+    required this.baseUrl,
+    required this.dio,
+  });
 
   Future<LoginResponse> login({
     required String username,

@@ -48,12 +48,11 @@ class CustomInterceptor extends Interceptor {
         final response = await dio.fetch(options);
         handler.resolve(response);
       } on DioError catch (e) {
+        // ref.read(userMeProvider.notifier).logout(); 이것을 사용하면 circular dependency 에러 발생
+        ref.read(authProvider.notifier).logout();
         return handler.reject(e);
       }
     }
-
-    ref.read(authProvider.notifier).logout();
-    // ref.read(userMeProvider.notifier).logout(); 이것을 사용하면 circular dependency 에러 발생
 
     return handler.reject(err);
   }

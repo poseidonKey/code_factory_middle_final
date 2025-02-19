@@ -62,7 +62,7 @@ class BasketNotifier extends StateNotifier<List<BasketItemModel>> {
       state = state
           .map(
             (e) =>
-                e.product.id == product.id ? e.copyWith(count: e.count + 1) : e,
+                e.product.id == product.id ? e.copyWith(count: e.count - 1) : e,
           )
           .toList();
       // existingProduct.count=existingProduct.count+1;
