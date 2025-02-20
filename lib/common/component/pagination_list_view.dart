@@ -82,30 +82,39 @@ class _PaginationListViewState<T extends IModelWithId>
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: ListView.separated(
-        controller: controller,
-        itemCount: cp.data.length + 1,
-        itemBuilder: (_, index) {
-          if (index == cp.data.length) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Center(
-                child: cp is CursorPaginationFetchingMore
-                    ? CircularProgressIndicator()
-                    : Text('last Data'),
-              ),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          ref.read(widget.provider.notifier).paginate(
+                forceRefetch: true, // 무조건 강제로 새로고침
+              );
+        },
+        child: ListView.separated(
+          physics:
+              AlwaysScrollableScrollPhysics(), // 데이터가 부족해도 항상 강제 스크롤을 할 수 있도록 함
+          controller: controller,
+          itemCount: cp.data.length + 1,
+          itemBuilder: (_, index) {
+            if (index == cp.data.length) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Center(
+                  child: cp is CursorPaginationFetchingMore
+                      ? CircularProgressIndicator()
+                      : Text('last Data'),
+                ),
+              );
+            }
+            final pItem = cp.data[index];
+            return widget.itemBuilder(
+              context,
+              index,
+              pItem,
             );
-          }
-          final pItem = cp.data[index];
-          return widget.itemBuilder(
-            context,
-            index,
-            pItem,
-          );
-        },
-        separatorBuilder: (_, index) {
-          return SizedBox(height: 16.0);
-        },
+          },
+          separatorBuilder: (_, index) {
+            return SizedBox(height: 16.0);
+          },
+        ),
       ),
     );
   }

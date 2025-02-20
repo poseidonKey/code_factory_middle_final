@@ -31,6 +31,7 @@ class ProductCard extends ConsumerWidget {
   }) {
     return ProductCard(
       image: Image.network(
+        // model.imgUrl,
         'http://$ip${model.imgUrl}',
         width: 110,
         height: 110,
@@ -52,7 +53,8 @@ class ProductCard extends ConsumerWidget {
   }) {
     return ProductCard(
       image: Image.network(
-        'http://$ip${model.imgUrl}',
+        model.imgUrl,
+        // 'http://$ip${model.imgUrl}',
         width: 110,
         height: 110,
         fit: BoxFit.cover,

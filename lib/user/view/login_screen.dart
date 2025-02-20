@@ -69,7 +69,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              title: const Text('title :회원가입'),
+                              content: const Text('content: '),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Close'),
+                                ),
+                              ]);
+                        });
+                  },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.black,
                   ),
